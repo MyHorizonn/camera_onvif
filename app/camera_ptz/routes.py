@@ -68,7 +68,7 @@ def move_up():
 
 
 @camera_ptz.route('/down', methods=['POST'])
-def move_up():
+def move_down():
     print('up')
     if mycam != None:
         global moverequest
@@ -102,7 +102,7 @@ def move_up():
 
 
 @camera_ptz.route('/left', methods=['POST'])
-def move_up():
+def move_left():
     print('up')
     if mycam != None:
         global moverequest
@@ -136,7 +136,7 @@ def move_up():
 
 
 @camera_ptz.route('/right', methods=['POST'])
-def move_up():
+def move_right():
     print('up')
     if mycam != None:
         global moverequest
