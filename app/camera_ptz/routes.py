@@ -66,6 +66,109 @@ def move_up():
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
 
+
+@camera_ptz.route('/down', methods=['POST'])
+def move_up():
+    print('up')
+    if mycam != None:
+        global moverequest
+        moverequest = ptz.create_type('ContinuousMove')
+        moverequest.ProfileToken = media_profile.token
+        if moverequest.Velocity is None:
+            moverequest.Velocity = ptz.GetStatus({'ProfileToken': media_profile.token}).Position
+
+        global XMAX, XMIN, YMAX, YMIN
+        XMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Max
+        XMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Min
+        YMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Max
+        YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
+
+        print(XMAX, XMIN, YMAX, YMIN)
+
+        print ('move down...')
+        moverequest.Velocity.PanTilt.x = 0
+        moverequest.Velocity.PanTilt.y = YMIN
+        moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+
+        global active
+        if active:
+            ptz.Stop({'ProfileToken': moverequest.ProfileToken})
+        active = True
+        ptz.ContinuousMove(moverequest)
+
+        return jsonify({'msg': 'ok'}), 200
+    return jsonify({'msg': 'err'}), 404
+
+
+@camera_ptz.route('/left', methods=['POST'])
+def move_up():
+    print('up')
+    if mycam != None:
+        global moverequest
+        moverequest = ptz.create_type('ContinuousMove')
+        moverequest.ProfileToken = media_profile.token
+        if moverequest.Velocity is None:
+            moverequest.Velocity = ptz.GetStatus({'ProfileToken': media_profile.token}).Position
+
+        global XMAX, XMIN, YMAX, YMIN
+        XMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Max
+        XMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Min
+        YMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Max
+        YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
+
+        print(XMAX, XMIN, YMAX, YMIN)
+
+        print ('move up...')
+        moverequest.Velocity.PanTilt.x = XMIN
+        moverequest.Velocity.PanTilt.y = 0
+        moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+
+        global active
+        if active:
+            ptz.Stop({'ProfileToken': moverequest.ProfileToken})
+        active = True
+        ptz.ContinuousMove(moverequest)
+
+        return jsonify({'msg': 'ok'}), 200
+    return jsonify({'msg': 'err'}), 404
+
+
+@camera_ptz.route('/right', methods=['POST'])
+def move_up():
+    print('up')
+    if mycam != None:
+        global moverequest
+        moverequest = ptz.create_type('ContinuousMove')
+        moverequest.ProfileToken = media_profile.token
+        if moverequest.Velocity is None:
+            moverequest.Velocity = ptz.GetStatus({'ProfileToken': media_profile.token}).Position
+
+        global XMAX, XMIN, YMAX, YMIN
+        XMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Max
+        XMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Min
+        YMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Max
+        YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
+
+        print(XMAX, XMIN, YMAX, YMIN)
+
+        print ('move up...')
+        moverequest.Velocity.PanTilt.x = XMAX
+        moverequest.Velocity.PanTilt.y = 0
+        moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+
+        global active
+        if active:
+            ptz.Stop({'ProfileToken': moverequest.ProfileToken})
+        active = True
+        ptz.ContinuousMove(moverequest)
+
+        return jsonify({'msg': 'ok'}), 200
+    return jsonify({'msg': 'err'}), 404
+
+
 @camera_ptz.route('/stop', methods=['POST'])
 def stop():
     if mycam != None:
