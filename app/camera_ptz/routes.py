@@ -173,9 +173,6 @@ def move_right():
 def stop():
     if mycam != None:
         global active
-        media_profile = media.GetProfiles()[0]
-        request = ptz.create_type('GetConfigurationOptions')
-        request.ConfigurationToken = media_profile.PTZConfiguration.token
         ptz.Stop({'ProfileToken': request.ProfileToken})
         active = False
         return jsonify({'msg': 'ok'}), 200
