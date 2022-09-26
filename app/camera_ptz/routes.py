@@ -50,14 +50,14 @@ def move_up():
         YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
 
         print ('move up...')
-        request.Velocity.PanTilt.x = 0
-        request.Velocity.PanTilt.y = YMAX
+        moverequest.Velocity.PanTilt.x = 0
+        moverequest.Velocity.PanTilt.y = YMAX
 
         global active
         if active:
-            ptz.Stop({'ProfileToken': request.ProfileToken})
+            ptz.Stop({'ProfileToken': moverequest.ProfileToken})
         active = True
-        ptz.ContinuousMove(request)
+        ptz.ContinuousMove(moverequest)
 
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404

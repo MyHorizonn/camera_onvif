@@ -3,7 +3,7 @@ from onvif import ONVIFCamera, exceptions
 
 mycam = None
 try:
-    mycam = ONVIFCamera('127.0.0.1', 80, 'admin', 'admin')
+    mycam = ONVIFCamera('192.168.2.42', 80, 'python', 'Qwert1234')
     print("camera connected")
 except (exceptions.ONVIFError) as e:
     print("connect error")
