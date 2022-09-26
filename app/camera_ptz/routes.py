@@ -49,9 +49,13 @@ def move_up():
         YMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Max
         YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
 
+        print(XMAX, XMIN, YMAX, YMIN)
+
         print ('move up...')
         moverequest.Velocity.PanTilt.x = 0
         moverequest.Velocity.PanTilt.y = YMAX
+        moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
         global active
         if active:
