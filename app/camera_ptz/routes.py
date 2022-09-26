@@ -173,7 +173,7 @@ def move_right():
 def stop():
     if mycam != None:
         global active
-        ptz.Stop({'ProfileToken': request.ProfileToken})
+        ptz.Stop({'ProfileToken': moverequest.ProfileToken})
         active = False
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
