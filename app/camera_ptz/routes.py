@@ -1,7 +1,8 @@
 from flask import (
     Flask,
     request,
-    jsonify
+    jsonify,
+    render_template
 )
 from . import camera_ptz
 from .. import mycam
@@ -11,18 +12,30 @@ XMIN = -1
 YMAX = 1
 YMIN = -1
 
+ptz = None
+media = None
+media_profile = None
+request = None
+ptz_configuration_options = None
 moverequest = None
-ptz = mycam.create_ptz_service()
-media = mycam.create_media_service()
-active = False
-media_profile = media.GetProfiles()[0]
-request = ptz.create_type('GetConfigurationOptions')
-request.ConfigurationToken = media_profile.PTZConfiguration.token
-ptz_configuration_options = ptz.GetConfigurationOptions(request)
+
+if mycam != None:
+    ptz = mycam.create_ptz_service()
+    media = mycam.create_media_service()
+    active = False
+    media_profile = media.GetProfiles()[0]
+    request = ptz.create_type('GetConfigurationOptions')
+    request.ConfigurationToken = media_profile.PTZConfiguration.token
+    ptz_configuration_options = ptz.GetConfigurationOptions(request)
+
+@camera_ptz.route('/')
+def main():
+    return render_template('index.html')
 
 
 @camera_ptz.route('/up', methods=['POST'])
 def move_up():
+    print('up')
     if mycam != None:
         global moverequest
         moverequest = ptz.create_type('ContinuousMove')
