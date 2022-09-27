@@ -178,3 +178,11 @@ def stop():
         active = False
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
+
+@camera_ptz.route('/set_preset', methods=['POST'])
+def set_preset():
+    if mycam != None:
+        token = ptz.SetPreset({'ProfileToken': media_profile.token})
+        print(token)
+        return jsonify({'msg': 'ok'}), 200
+    return jsonify({'msg': 'err'}), 404
