@@ -53,7 +53,10 @@ def move_up():
 
         print ('move up...')
         moverequest.Velocity.PanTilt.x = 0
-        moverequest.Velocity.PanTilt.y = YMAX
+        if moverequest.Velocity.PanTilt.y + 0.1 >= 1:
+            moverequest.Velocity.PanTilt.y = YMAX
+        else:
+            moverequest.Velocity.PanTilt.y = moverequest.Velocity.PanTilt.y + 0.1
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
@@ -69,7 +72,7 @@ def move_up():
 
 @camera_ptz.route('/down', methods=['POST'])
 def move_down():
-    print('up')
+    print('down')
     if mycam != None:
         global moverequest
         moverequest = ptz.create_type('ContinuousMove')
@@ -87,7 +90,11 @@ def move_down():
 
         print ('move down...')
         moverequest.Velocity.PanTilt.x = 0
-        moverequest.Velocity.PanTilt.y = YMIN
+        if moverequest.Velocity.PanTilt.y - 0.1 <= -1:
+            moverequest.Velocity.PanTilt.y = YMIN
+        else:
+            moverequest.Velocity.PanTilt.y = moverequest.Velocity.PanTilt.y - 0.1
+        moverequest.Velocity.PanTilt.y = moverequest.Velocity.PanTilt.y
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
@@ -103,7 +110,7 @@ def move_down():
 
 @camera_ptz.route('/left', methods=['POST'])
 def move_left():
-    print('up')
+    print('left')
     if mycam != None:
         global moverequest
         moverequest = ptz.create_type('ContinuousMove')
@@ -119,9 +126,12 @@ def move_left():
 
         print(XMAX, XMIN, YMAX, YMIN)
 
-        print ('move up...')
-        moverequest.Velocity.PanTilt.x = XMIN
+        print ('move left...')
         moverequest.Velocity.PanTilt.y = 0
+        if moverequest.Velocity.PanTilt.x - 0.1 <= -1:
+            moverequest.Velocity.PanTilt.x = XMIN
+        else:
+            moverequest.Velocity.PanTilt.x = moverequest.Velocity.PanTilt.x - 0.1
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
@@ -137,7 +147,7 @@ def move_left():
 
 @camera_ptz.route('/right', methods=['POST'])
 def move_right():
-    print('up')
+    print('right')
     if mycam != None:
         global moverequest
         moverequest = ptz.create_type('ContinuousMove')
@@ -151,11 +161,12 @@ def move_right():
         YMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Max
         YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
 
-        print(XMAX, XMIN, YMAX, YMIN)
-
-        print ('move up...')
-        moverequest.Velocity.PanTilt.x = XMAX
+        print ('move right...')
         moverequest.Velocity.PanTilt.y = 0
+        if moverequest.Velocity.PanTilt.x + 0.1 >= 1:
+            moverequest.Velocity.PanTilt.y = XMAX
+        else:
+            moverequest.Velocity.PanTilt.x = moverequest.Velocity.PanTilt.x + 0.1
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
