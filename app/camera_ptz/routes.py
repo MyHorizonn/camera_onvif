@@ -53,10 +53,7 @@ def move_up():
 
         print ('move up...')
         moverequest.Velocity.PanTilt.x = 0
-        if moverequest.Velocity.PanTilt.y + 0.1 >= 1:
-            moverequest.Velocity.PanTilt.y = YMAX
-        else:
-            moverequest.Velocity.PanTilt.y = moverequest.Velocity.PanTilt.y + 0.1
+        moverequest.Velocity.PanTilt.y = YMAX / 2
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
@@ -90,10 +87,7 @@ def move_down():
 
         print ('move down...')
         moverequest.Velocity.PanTilt.x = 0
-        if moverequest.Velocity.PanTilt.y - 0.1 <= -1:
-            moverequest.Velocity.PanTilt.y = YMIN
-        else:
-            moverequest.Velocity.PanTilt.y = moverequest.Velocity.PanTilt.y - 0.1
+        moverequest.Velocity.PanTilt.y = YMIN / 2
         moverequest.Velocity.PanTilt.y = moverequest.Velocity.PanTilt.y
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
@@ -128,10 +122,7 @@ def move_left():
 
         print ('move left...')
         moverequest.Velocity.PanTilt.y = 0
-        if moverequest.Velocity.PanTilt.x - 0.1 <= -1:
-            moverequest.Velocity.PanTilt.x = XMIN
-        else:
-            moverequest.Velocity.PanTilt.x = moverequest.Velocity.PanTilt.x - 0.1
+        moverequest.Velocity.PanTilt.x = XMIN / 2
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
@@ -163,10 +154,7 @@ def move_right():
 
         print ('move right...')
         moverequest.Velocity.PanTilt.y = 0
-        if moverequest.Velocity.PanTilt.x + 0.1 >= 1:
-            moverequest.Velocity.PanTilt.y = XMAX
-        else:
-            moverequest.Velocity.PanTilt.x = moverequest.Velocity.PanTilt.x + 0.1
+        moverequest.Velocity.PanTilt.y = XMAX / 2
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
