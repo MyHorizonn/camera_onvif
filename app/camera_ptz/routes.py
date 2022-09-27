@@ -187,7 +187,7 @@ def set_preset():
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
 
-@camera_ptz.rouet('/select_preset', methods=['POST'])
+@camera_ptz.route('/select_preset', methods=['POST'])
 def select_preset():
     if mycam != None:
         data = request.json
