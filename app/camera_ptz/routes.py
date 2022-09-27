@@ -154,7 +154,7 @@ def move_right():
 
         print ('move right...')
         moverequest.Velocity.PanTilt.y = 0
-        moverequest.Velocity.PanTilt.y = YMAX / 2
+        moverequest.Velocity.PanTilt.y = XMAX / 2
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
