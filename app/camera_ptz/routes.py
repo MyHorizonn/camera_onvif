@@ -15,7 +15,7 @@ YMIN = -1
 ptz = None
 media = None
 media_profile = None
-request = None
+cam_request = None
 ptz_configuration_options = None
 moverequest = None
 
@@ -24,9 +24,9 @@ if mycam != None:
     media = mycam.create_media_service()
     active = False
     media_profile = media.GetProfiles()[0]
-    request = ptz.create_type('GetConfigurationOptions')
-    request.ConfigurationToken = media_profile.PTZConfiguration.token
-    ptz_configuration_options = ptz.GetConfigurationOptions(request)
+    cam_request = ptz.create_type('GetConfigurationOptions')
+    cam_request.ConfigurationToken = media_profile.PTZConfiguration.token
+    ptz_configuration_options = ptz.GetConfigurationOptions(cam_request)
 
 @camera_ptz.route('/')
 def main():
