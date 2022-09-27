@@ -186,3 +186,13 @@ def set_preset():
         print(token)
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
+
+@camera_ptz.rouet('/select_preset', methods=['POST'])
+def select_preset():
+    if mycam != None:
+        data = request.json
+        if data is None:
+            data = request.form.to_dict()
+        ptz.GotoPreset({'ProfileToken': media_profile.token, 'PresetToken': 1})
+        return jsonify({'msg': 'ok'}), 200
+    return jsonify({'msg': 'err'}), 404
