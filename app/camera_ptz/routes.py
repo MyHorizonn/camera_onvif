@@ -5,28 +5,10 @@ from flask import (
     render_template
 )
 from . import camera_ptz
-from .. import mycam
+from onvif import ONVIFCamera, exceptions
 
-XMAX = 1
-XMIN = -1
-YMAX = 1
-YMIN = -1
-
-ptz = None
-media = None
-media_profile = None
-cam_request = None
-ptz_configuration_options = None
+active = False
 moverequest = None
-
-if mycam != None:
-    ptz = mycam.create_ptz_service()
-    media = mycam.create_media_service()
-    active = False
-    media_profile = media.GetProfiles()[0]
-    cam_request = ptz.create_type('GetConfigurationOptions')
-    cam_request.ConfigurationToken = media_profile.PTZConfiguration.token
-    ptz_configuration_options = ptz.GetConfigurationOptions(cam_request)
 
 @camera_ptz.route('/')
 def main():
@@ -36,20 +18,32 @@ def main():
 @camera_ptz.route('/up', methods=['POST'])
 def move_up():
     print('up')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
     if mycam != None:
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
+        cam_request = ptz.create_type('GetConfigurationOptions')
+        cam_request.ConfigurationToken = media_profile.PTZConfiguration.token
+        ptz_configuration_options = ptz.GetConfigurationOptions(cam_request)
+
         global moverequest
         moverequest = ptz.create_type('ContinuousMove')
         moverequest.ProfileToken = media_profile.token
         if moverequest.Velocity is None:
             moverequest.Velocity = ptz.GetStatus({'ProfileToken': media_profile.token}).Position
 
-        global XMAX, XMIN, YMAX, YMIN
-        XMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Max
-        XMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Min
         YMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Max
-        YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
-
-        print(XMAX, XMIN, YMAX, YMIN)
 
         print ('move up...')
         moverequest.Velocity.PanTilt.x = 0
@@ -70,20 +64,31 @@ def move_up():
 @camera_ptz.route('/down', methods=['POST'])
 def move_down():
     print('down')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
     if mycam != None:
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
+        cam_request = ptz.create_type('GetConfigurationOptions')
+        cam_request.ConfigurationToken = media_profile.PTZConfiguration.token
+        ptz_configuration_options = ptz.GetConfigurationOptions(cam_request)
         global moverequest
         moverequest = ptz.create_type('ContinuousMove')
         moverequest.ProfileToken = media_profile.token
         if moverequest.Velocity is None:
             moverequest.Velocity = ptz.GetStatus({'ProfileToken': media_profile.token}).Position
 
-        global XMAX, XMIN, YMAX, YMIN
-        XMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Max
-        XMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Min
-        YMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Max
         YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
-
-        print(XMAX, XMIN, YMAX, YMIN)
 
         print ('move down...')
         moverequest.Velocity.PanTilt.x = 0
@@ -104,20 +109,31 @@ def move_down():
 @camera_ptz.route('/left', methods=['POST'])
 def move_left():
     print('left')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
     if mycam != None:
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
+        cam_request = ptz.create_type('GetConfigurationOptions')
+        cam_request.ConfigurationToken = media_profile.PTZConfiguration.token
+        ptz_configuration_options = ptz.GetConfigurationOptions(cam_request)
         global moverequest
         moverequest = ptz.create_type('ContinuousMove')
         moverequest.ProfileToken = media_profile.token
         if moverequest.Velocity is None:
             moverequest.Velocity = ptz.GetStatus({'ProfileToken': media_profile.token}).Position
 
-        global XMAX, XMIN, YMAX, YMIN
-        XMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Max
         XMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Min
-        YMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Max
-        YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
-
-        print(XMAX, XMIN, YMAX, YMIN)
 
         print ('move left...')
         moverequest.Velocity.PanTilt.y = 0
@@ -138,18 +154,31 @@ def move_left():
 @camera_ptz.route('/right', methods=['POST'])
 def move_right():
     print('right')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
     if mycam != None:
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
+        cam_request = ptz.create_type('GetConfigurationOptions')
+        cam_request.ConfigurationToken = media_profile.PTZConfiguration.token
+        ptz_configuration_options = ptz.GetConfigurationOptions(cam_request)
         global moverequest
         moverequest = ptz.create_type('ContinuousMove')
         moverequest.ProfileToken = media_profile.token
         if moverequest.Velocity is None:
             moverequest.Velocity = ptz.GetStatus({'ProfileToken': media_profile.token}).Position
 
-        global XMAX, XMIN, YMAX, YMIN
         XMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Max
-        XMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].XRange.Min
-        YMAX = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Max
-        YMIN = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].YRange.Min
 
         print ('move right...')
         moverequest.Velocity.PanTilt.y = 0
@@ -169,7 +198,22 @@ def move_right():
 
 @camera_ptz.route('/stop', methods=['POST'])
 def stop():
+    print('stop')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
     if mycam != None:
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
         global active
         global moverequest
         moverequest = ptz.create_type('ContinuousMove')
@@ -181,7 +225,22 @@ def stop():
 
 @camera_ptz.route('/set_preset', methods=['POST'])
 def set_preset():
+    print('set_presets')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
     if mycam != None:
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
         token = ptz.SetPreset({'ProfileToken': media_profile.token})
         print(token)
         return jsonify({'msg': 'ok'}), 200
@@ -189,14 +248,44 @@ def set_preset():
 
 @camera_ptz.route('/select_preset', methods=['POST'])
 def select_preset():
+    print('select_presets')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
     if mycam != None:
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
         ptz.GotoPreset({'ProfileToken': media_profile.token, 'PresetToken': 1})
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
 
 @camera_ptz.route('/get_presets', methods=['POST'])
 def get_presets():
+    print('get_presets')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
     if mycam != None:
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
         presets = ptz.GetPresets({'ProfileToken': media_profile.token})
         print(presets)
         return jsonify({'msg': 'ok'}), 200

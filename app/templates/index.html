@@ -8,13 +8,48 @@
     <title>Document</title>
 </head>
 <body>
-    <button onclick="make_act('left')">left</button>
-    <button onclick="make_act('right')">right</button>
-    <button onclick="make_act('up')">up</button>
-    <button onclick="make_act('down')">down</button>
-    <button onclick="make_act('stop')">stop</button>
-    <button onclick="make_act('set_preset')">set preset</button>
-    <button onclick="make_act('select_preset')">select preset</button>
-    <button onclick="make_act('get_presets')">get presets</button>
+    <div class="control">
+        <div class="joy">
+            <input class="allow" onclick="make_act('up')" type="image" style="width: 5%; height: 5%; margin-left: 5%" src="{{ url_for('static', filename='images/up.png') }}"/>
+                <div style="display: flex;">
+                    <input class="allow" onclick="make_act('left')" type="image" style="width: 5%; height: 5%;" src="{{ url_for('static', filename='images/left.png') }}"/>
+                    <input class="allow" onclick="make_act('stop')" type="image" style="width: 5%; height: 5%;" src="{{ url_for('static', filename='images/pause.png') }}"/>
+                    <input class="allow" onclick="make_act('right')" type="image" style="width: 5%; height: 5%;" src="{{ url_for('static', filename='images/right.png') }}"/>
+                </div>
+            <input class="allow" onclick="make_act('down')" type="image" style="width: 5%; height: 5%; margin-left: 5%;" src="{{ url_for('static', filename='images/down.png') }}"/>
+        </div>
+    <div>
+        <label>Camera ip:</label>
+        <input
+        type="text"
+        id="cam_ip"
+        />
+    </div>
+    <div style="margin-top: 1%;">
+        <label>Port:</label>
+        <input
+        type="text"
+        id="port"
+        />
+    </div>
+    <div style="margin-top: 1%;">
+        <label>Username:</label>
+        <input
+        type="text"
+        id="username"
+        />
+    </div>
+    <div style="margin-top: 1%;">
+        <label>Password:</label>
+        <input
+        type="text"
+        id="password"
+        />
+    </div>
+    <div style="margin-top: 5%;">
+        <button onclick="make_act('set_preset')">set preset</button>
+        <button onclick="make_act('select_preset')">select preset</button>
+        <button onclick="make_act('get_presets')">get presets</button>
+    </div>
 </body>
 </html>
