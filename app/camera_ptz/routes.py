@@ -243,7 +243,7 @@ def set_preset():
         media_profile = media.GetProfiles()[0]
         token = ptz.SetPreset({'ProfileToken': media_profile.token})
         print(token)
-        return jsonify({'msg': 'ok'}), 200
+        return jsonify({'token': token}), 200
     return jsonify({'msg': 'err'}), 404
 
 @camera_ptz.route('/select_preset', methods=['POST'])
@@ -264,7 +264,7 @@ def select_preset():
         ptz = mycam.create_ptz_service()
         media = mycam.create_media_service()
         media_profile = media.GetProfiles()[0]
-        ptz.GotoPreset({'ProfileToken': media_profile.token, 'PresetToken': 1})
+        ptz.GotoPreset({'ProfileToken': media_profile.token, 'PresetToken': int(cam_info['preset'])})
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
 
@@ -287,6 +287,5 @@ def get_presets():
         media = mycam.create_media_service()
         media_profile = media.GetProfiles()[0]
         presets = ptz.GetPresets({'ProfileToken': media_profile.token})
-        print(presets)
-        return jsonify({'msg': 'ok'}), 200
+        return jsonify(presets), 200
     return jsonify({'msg': 'err'}), 404
