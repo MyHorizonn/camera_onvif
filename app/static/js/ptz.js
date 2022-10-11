@@ -94,7 +94,7 @@ function select_preset(){
     })
 }
 
-function zoom(){
+function zoom_up(){
     data = {
         cam_ip: document.getElementById('cam_ip').value,
         port: document.getElementById('port').value,
@@ -102,7 +102,30 @@ function zoom(){
         password: document.getElementById('password').value,
         preset: document.getElementById('preset').value
     }
-    fetch('/zoom', {
+    fetch('/zoom_up', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+            data: data,
+        }),
+    })
+    .then((response) => {
+        console.log(response.status)
+    })
+}
+
+function zoom_down(){
+    data = {
+        cam_ip: document.getElementById('cam_ip').value,
+        port: document.getElementById('port').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        preset: document.getElementById('preset').value
+    }
+    fetch('/zoom_down', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
