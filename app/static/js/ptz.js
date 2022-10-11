@@ -79,7 +79,7 @@ function select_preset(){
         password: document.getElementById('password').value,
         preset: document.getElementById('preset').value
     }
-    fetch('/get_presets', {
+    fetch('/select_preset', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

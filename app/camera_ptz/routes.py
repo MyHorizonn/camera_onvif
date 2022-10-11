@@ -51,6 +51,8 @@ def move_up():
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
+        print(moverequest.Velocity.Zoom)
+        
         global active
         if active:
             ptz.Stop({'ProfileToken': moverequest.ProfileToken})
