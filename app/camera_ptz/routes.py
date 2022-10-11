@@ -14,6 +14,50 @@ moverequest = None
 def main():
     return render_template('index.html')
 
+@camera_ptz.route('/zoom', methods=['POST'])
+def zoom():
+    print('zoom')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
+    if mycam != None:
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
+        cam_request = ptz.create_type('GetConfigurationOptions')
+        cam_request.ConfigurationToken = media_profile.PTZConfiguration.token
+        ptz_configuration_options = ptz.GetConfigurationOptions(cam_request)
+
+        global moverequest
+        moverequest = ptz.create_type('ContinuousMove')
+        moverequest.ProfileToken = media_profile.token
+        if moverequest.Velocity is None:
+            moverequest.Velocity = ptz.GetStatus({'ProfileToken': media_profile.token}).Position
+
+        print ('zooming...')
+        moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.x = 1.0
+        
+        print(moverequest.Velocity.Zoom)
+
+        global active
+        if active:
+            ptz.Stop({'ProfileToken': moverequest.ProfileToken})
+        active = True
+        ptz.ContinuousMove(moverequest)
+
+        return jsonify({'msg': 'ok'}), 200
+    return jsonify({'msg': 'err'}), 404
+
 
 @camera_ptz.route('/up', methods=['POST'])
 def move_up():
@@ -52,7 +96,7 @@ def move_up():
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
 
         print(moverequest.Velocity.Zoom)
-        
+
         global active
         if active:
             ptz.Stop({'ProfileToken': moverequest.ProfileToken})
