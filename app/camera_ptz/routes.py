@@ -60,7 +60,7 @@ def zoom_down():
 
 @camera_ptz.route('/zoom_up', methods=['POST'])
 def zoom_up():
-    print('zoom ip')
+    print('zoom up')
     data = request.json
     if data is None:
         data = request.form.to_dict()

@@ -100,7 +100,6 @@ function zoom_up(){
         port: document.getElementById('port').value,
         username: document.getElementById('username').value,
         password: document.getElementById('password').value,
-        preset: document.getElementById('preset').value
     }
     fetch('/zoom_up', {
         method: 'POST',
@@ -123,7 +122,6 @@ function zoom_down(){
         port: document.getElementById('port').value,
         username: document.getElementById('username').value,
         password: document.getElementById('password').value,
-        preset: document.getElementById('preset').value
     }
     fetch('/zoom_down', {
         method: 'POST',
