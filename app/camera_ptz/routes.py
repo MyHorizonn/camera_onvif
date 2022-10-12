@@ -35,10 +35,17 @@ def focus():
         imaging = mycam.create_imaging_service()
         media = mycam.create_media_service()
         video_sources = media.GetVideoSources()[0]
-        request = imaging.create_type('SetImagingSettings')
+        focus_request = imaging.create_type('SetImagingSettings')
 
-        print(video_sources)
+        focus_request.VideoSourceToken = video_sources.token
+        focus_request.ImagingSettings = {
+            'Focus':{
+                'AutoFocusMode': 'MANUAL'
+            }
+        }
 
+        imaging.SetImagingSettings(focus_request)
+        
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
 
