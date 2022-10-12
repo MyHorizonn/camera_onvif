@@ -137,3 +137,25 @@ function zoom_down(){
         console.log(response.status)
     })
 }
+
+function focus(){
+    data = {
+        cam_ip: document.getElementById('cam_ip').value,
+        port: document.getElementById('port').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+    }
+    fetch('/focus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+            data: data,
+        }),
+    })
+    .then((response) => {
+        console.log(response.status)
+    })
+}
