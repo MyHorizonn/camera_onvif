@@ -45,7 +45,11 @@ def zoom_down():
         print ('zooming. down..')
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+        moverequest.Velocity.PanTilt.x = 0
+        moverequest.Velocity.PanTilt.y = 0
         moverequest.Velocity.Zoom.x = -1.0
+
+        print(moverequest)
         
         print(moverequest.Velocity.Zoom)
 
@@ -89,6 +93,8 @@ def zoom_up():
         print ('zooming up...')
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+        moverequest.Velocity.PanTilt.x = 0
+        moverequest.Velocity.PanTilt.y = 0
         moverequest.Velocity.Zoom.x = 1.0
         
         print(moverequest.Velocity.Zoom)
