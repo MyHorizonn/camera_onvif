@@ -50,7 +50,9 @@ def focus():
         move_request = imaging.create_type('Move')
         move_request.VideoSourceToken = video_sources.token
         move_request.Focus = {
-                'Continuous': 1.0
+                'Continuous':{
+                    'Speed': 1.0
+                }
             }
         imaging.Move(move_request)
 
