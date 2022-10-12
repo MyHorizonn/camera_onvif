@@ -138,7 +138,8 @@ function zoom_down(){
     })
 }
 
-function focus(){
+function _focus(){
+    console.log('kek')
     data = {
         cam_ip: document.getElementById('cam_ip').value,
         port: document.getElementById('port').value,
