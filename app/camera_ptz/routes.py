@@ -39,13 +39,21 @@ def focus():
         # установка на ручной фокус
         focus_request = imaging.create_type('SetImagingSettings')
         focus_request.VideoSourceToken = video_sources.token
-        focus_request.ImagingSettings.Focus.AutoFocusMode = 'MANUAL'
+        focus_request.ImagingSettings = {
+            'Focus':{
+                'AutoFocusMode': 'MANUAL'
+            }
+        }
         imaging.SetImagingSettings(focus_request)
 
         # фокус
         move_request = imaging.create_type('Move')
         move_request.VideoSourceToken = video_sources.token
-        move_request.Focus.Continuous.Speed = 1.0
+        move_request = {
+            'Focus':{
+                'Continuous': 1.0
+            }
+        }
         imaging.Move(move_request)
 
         return jsonify({'msg': 'ok'}), 200
