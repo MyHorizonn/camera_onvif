@@ -49,11 +49,9 @@ def focus():
         # фокус
         move_request = imaging.create_type('Move')
         move_request.VideoSourceToken = video_sources.token
-        move_request = {
-            'Focus':{
+        move_request.Focus = {
                 'Continuous': 1.0
             }
-        }
         imaging.Move(move_request)
 
         return jsonify({'msg': 'ok'}), 200
