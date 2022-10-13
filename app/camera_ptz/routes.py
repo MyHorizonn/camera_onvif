@@ -46,15 +46,18 @@ def focus():
         }
         imaging.SetImagingSettings(focus_request)
 
+        status = imaging.GetStatus(video_sources.token)
+        print(status)
+
         # фокус
         move_request = imaging.create_type('Move')
         move_request.VideoSourceToken = video_sources.token
         move_request.Focus = {
-                'Absolute':{
-                    'Position': 100.0
+                'Continuous':{
+                    'Speed': 1.0
                 }
             }
-        print(move_request)
+        #print(move_request)
         imaging.Move(move_request)
 
         '''
