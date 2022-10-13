@@ -208,6 +208,7 @@ def move_up():
         moverequest.Velocity.PanTilt.y = YMAX / 2
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.x = 0.0
 
         print(moverequest.Velocity.Zoom)
 
@@ -255,6 +256,7 @@ def move_down():
         moverequest.Velocity.PanTilt.y = YMIN / 2
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.x = 0.0
 
         global active
         if active:
@@ -300,6 +302,7 @@ def move_left():
         moverequest.Velocity.PanTilt.x = XMIN / 2
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.x = 0.0
 
         global active
         if active:
@@ -345,6 +348,7 @@ def move_right():
         moverequest.Velocity.PanTilt.x = XMAX / 2
         moverequest.Velocity.PanTilt.space = ptz_configuration_options.Spaces.ContinuousPanTiltVelocitySpace[0].URI
         moverequest.Velocity.Zoom.space = ptz_configuration_options.Spaces.ContinuousZoomVelocitySpace[0].URI
+        moverequest.Velocity.Zoom.x = 0.0
 
         global active
         if active:
