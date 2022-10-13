@@ -36,16 +36,6 @@ def focus():
         media = mycam.create_media_service()
         video_sources = media.GetVideoSources()[0]
 
-        # установка на ручной фокус
-        focus_request = imaging.create_type('SetImagingSettings')
-        focus_request.VideoSourceToken = video_sources.token
-        focus_request.ImagingSettings = {
-            'Focus':{
-                'AutoFocusMode': 'AUTO'
-            }
-        }
-        imaging.SetImagingSettings(focus_request)
-
         status = imaging.GetStatus(video_sources.token)
         print(status)
 
