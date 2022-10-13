@@ -41,7 +41,7 @@ def focus():
         focus_request.VideoSourceToken = video_sources.token
         focus_request.ImagingSettings = {
             'Focus':{
-                'AutoFocusMode': 'MANUAL'
+                'AutoFocusMode': 'AUTO'
             }
         }
         imaging.SetImagingSettings(focus_request)
@@ -50,11 +50,24 @@ def focus():
         move_request = imaging.create_type('Move')
         move_request.VideoSourceToken = video_sources.token
         move_request.Focus = {
-                'Continuous':{
-                    'Speed': 1.0
+                'Absolute':{
+                    'Position': 100.0
                 }
             }
+        print(move_request)
         imaging.Move(move_request)
+
+        '''
+        'Focus': {
+            'AutoFocusMode': 'MANUAL',
+            'DefaultSpeed': 1.0,
+            'NearLimit': 100.0,
+            'FarLimit': 0.0,
+            '_value_1': None,
+            '_attr_1': None
+        }
+
+        '''
 
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
