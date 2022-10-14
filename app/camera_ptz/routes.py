@@ -16,6 +16,64 @@ def main():
     return render_template('index.html')
 
 
+@camera_ptz.route('/focus_auto', methods=['POST'])
+def focus_auto():
+    print('focus auto')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
+    if mycam != None:
+
+        imaging = mycam.create_imaging_service()
+        media = mycam.create_media_service()
+        video_sources = media.GetVideoSources()[0]
+
+        focus_request = imaging.create_type('SetImagingSettings')
+        focus_request.VideoSourceToken = video_sources.token
+        focus_request.ImagingSettings = {
+            'Focus':{
+                'AutoFocusMode': 'AUTO'
+            }
+        }
+        imaging.SetImagingSettings(focus_request)
+
+        return jsonify({'msg': 'ok'}), 200
+    return jsonify({'msg': 'err'}), 404
+
+@camera_ptz.route('/focus_stop', methods=['POST'])
+def focus_stop():
+    print('focus stop')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
+    if mycam != None:
+        imaging = mycam.create_imaging_service()
+        media = mycam.create_media_service()
+        video_sources = media.GetVideoSources()[0]
+
+        # stop focus
+        imaging.Stop(video_sources.token)
+
+        return jsonify({'msg': 'ok'}), 200
+    return jsonify({'msg': 'err'}), 404
+
+
 @camera_ptz.route('/focus_plus', methods=['POST'])
 def focus_plus():
     print('focus +')
@@ -36,12 +94,18 @@ def focus_plus():
         media = mycam.create_media_service()
         video_sources = media.GetVideoSources()[0]
 
+        # ручной фокус
+        focus_request = imaging.create_type('SetImagingSettings')
+        focus_request.VideoSourceToken = video_sources.token
+        focus_request.ImagingSettings = {
+            'Focus':{
+                'AutoFocusMode': 'MANUAL'
+            }
+        }
+        imaging.SetImagingSettings(focus_request)
+
         # stop focus
         imaging.Stop(video_sources.token)
-
-        # status
-        status = imaging.GetStatus(video_sources.token)
-        print(status)
 
         # фокус
         move_request = imaging.create_type('Move')
@@ -54,17 +118,6 @@ def focus_plus():
         #print(move_request)
         imaging.Move(move_request)
 
-        '''
-        'Focus': {
-            'AutoFocusMode': 'MANUAL',
-            'DefaultSpeed': 1.0,
-            'NearLimit': 100.0,
-            'FarLimit': 0.0,
-            '_value_1': None,
-            '_attr_1': None
-        }
-
-        '''
 
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
@@ -90,12 +143,18 @@ def focus_minus():
         media = mycam.create_media_service()
         video_sources = media.GetVideoSources()[0]
 
+        # ручной фокус
+        focus_request = imaging.create_type('SetImagingSettings')
+        focus_request.VideoSourceToken = video_sources.token
+        focus_request.ImagingSettings = {
+            'Focus':{
+                'AutoFocusMode': 'MANUAL'
+            }
+        }
+        imaging.SetImagingSettings(focus_request)
+
         # stop focus
         imaging.Stop(video_sources.token)
-
-        # status
-        status = imaging.GetStatus(video_sources.token)
-        print(status)
 
         # фокус
         move_request = imaging.create_type('Move')

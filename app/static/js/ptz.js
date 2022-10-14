@@ -182,3 +182,47 @@ function focus_minus(){
         console.log(response.status)
     })
 }
+
+function focus_stop(){
+    data = {
+        cam_ip: document.getElementById('cam_ip').value,
+        port: document.getElementById('port').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+    }
+    fetch('/focus_stop', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+            data: data,
+        }),
+    })
+    .then((response) => {
+        console.log(response.status)
+    })
+}
+
+function focus_auto(){
+    data = {
+        cam_ip: document.getElementById('cam_ip').value,
+        port: document.getElementById('port').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+    }
+    fetch('/focus_auto', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+            data: data,
+        }),
+    })
+    .then((response) => {
+        console.log(response.status)
+    })
+}
