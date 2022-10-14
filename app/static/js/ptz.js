@@ -138,15 +138,37 @@ function zoom_down(){
     })
 }
 
-function _focus(){
-    console.log('kek')
+function focus_plus(){
     data = {
         cam_ip: document.getElementById('cam_ip').value,
         port: document.getElementById('port').value,
         username: document.getElementById('username').value,
         password: document.getElementById('password').value,
     }
-    fetch('/focus', {
+    fetch('/focus_plus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+            data: data,
+        }),
+    })
+    .then((response) => {
+        console.log(response.status)
+    })
+}
+
+
+function focus_minus(){
+    data = {
+        cam_ip: document.getElementById('cam_ip').value,
+        port: document.getElementById('port').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+    }
+    fetch('/focus_minus', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

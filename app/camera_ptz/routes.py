@@ -16,9 +16,9 @@ def main():
     return render_template('index.html')
 
 
-@camera_ptz.route('/focus', methods=['POST'])
-def focus():
-    print('focus')
+@camera_ptz.route('/focus_plus', methods=['POST'])
+def focus_plus():
+    print('focus +')
     data = request.json
     if data is None:
         data = request.form.to_dict()
@@ -36,6 +36,10 @@ def focus():
         media = mycam.create_media_service()
         video_sources = media.GetVideoSources()[0]
 
+        # stop focus
+        imaging.Stop(video_sources.token)
+
+        # status
         status = imaging.GetStatus(video_sources.token)
         print(status)
 
@@ -44,7 +48,7 @@ def focus():
         move_request.VideoSourceToken = video_sources.token
         move_request.Focus = {
                 'Continuous':{
-                    'Speed': 1.0
+                    'Speed': 7.0
                 }
             }
         #print(move_request)
@@ -65,6 +69,59 @@ def focus():
         return jsonify({'msg': 'ok'}), 200
     return jsonify({'msg': 'err'}), 404
 
+
+@camera_ptz.route('/focus_minus', methods=['POST'])
+def focus_minus():
+    print('focus -')
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
+    try:
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
+    if mycam != None:
+        
+        imaging = mycam.create_imaging_service()
+        media = mycam.create_media_service()
+        video_sources = media.GetVideoSources()[0]
+
+        # stop focus
+        imaging.Stop(video_sources.token)
+
+        # status
+        status = imaging.GetStatus(video_sources.token)
+        print(status)
+
+        # фокус
+        move_request = imaging.create_type('Move')
+        move_request.VideoSourceToken = video_sources.token
+        move_request.Focus = {
+                'Continuous':{
+                    'Speed': -7.0
+                }
+            }
+        #print(move_request)
+        imaging.Move(move_request)
+
+        '''
+        'Focus': {
+            'AutoFocusMode': 'MANUAL',
+            'DefaultSpeed': 1.0,
+            'NearLimit': 100.0,
+            'FarLimit': 0.0,
+            '_value_1': None,
+            '_attr_1': None
+        }
+
+        '''
+
+        return jsonify({'msg': 'ok'}), 200
+    return jsonify({'msg': 'err'}), 404
 
 
 @camera_ptz.route('/zoom_up', methods=['POST'])
