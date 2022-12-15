@@ -6,6 +6,7 @@ from flask import (
 )
 from . import camera_ptz
 from onvif import ONVIFCamera, exceptions
+import json
 
 active = False
 moverequest = None
@@ -15,6 +16,25 @@ moverequest = None
 def main():
     return render_template('index.html')
 
+@camera_ptz.route('/get_status')
+def get_status():
+    try:
+        mycam = ONVIFCamera("192.168.250.233", "80", "admin", "Qwert1234")
+        print("camera connected")
+    except (exceptions.ONVIFError) as e:
+        print("connect error")
+    if mycam != None:
+
+        ptz = mycam.create_ptz_service()
+        media = mycam.create_media_service()
+        media_profile = media.GetProfiles()[0]
+        req = ptz.create_type("GetStatus")
+        req.ProfileToken = media_profile.token
+        resp = ptz.GetStatus(req)
+
+        print(resp)
+        return jsonify({"msg": "ok"}), 200
+    return jsonify({'msg': 'err'}), 404
 
 @camera_ptz.route('/focus_auto', methods=['POST'])
 def focus_auto():
