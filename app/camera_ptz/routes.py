@@ -16,10 +16,16 @@ moverequest = None
 def main():
     return render_template('index.html')
 
-@camera_ptz.route('/get_status')
+@camera_ptz.route('/get_status', methods=['POST'])
 def get_status():
+    data = request.json
+    if data is None:
+        data = request.form.to_dict()
+    cam_info = data['data']
+    print(cam_info)
+    mycam = None
     try:
-        mycam = ONVIFCamera("192.168.250.233", "80", "admin", "Qwert1234")
+        mycam = ONVIFCamera(cam_info['cam_ip'], int(cam_info['port']), cam_info['username'], cam_info['password'])
         print("camera connected")
     except (exceptions.ONVIFError) as e:
         print("connect error")

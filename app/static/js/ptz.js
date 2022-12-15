@@ -226,3 +226,25 @@ function focus_auto(){
         console.log(response.status)
     })
 }
+
+function get_status(){
+    data = {
+        cam_ip: document.getElementById('cam_ip').value,
+        port: document.getElementById('port').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+    }
+    fetch('/get_status', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+            data: data,
+        }),
+    })
+    .then((response) => {
+        console.log(response.status)
+    })
+}
